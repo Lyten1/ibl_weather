@@ -1,12 +1,10 @@
-
 from fastapi import FastAPI
-from typing import List
 import sqlite3
 import pandas as pd
 
 app = FastAPI()
 
-db_path = 'weather_data_2.db'  # Assuming this is your database path
+db_path = 'weather_data_2.db'
 
 @app.get("/statistics/average")
 async def get_all_statistic_avg():
@@ -79,3 +77,4 @@ async def get_extreme_weather_days():
         }
 
     return extreme_weather_days
+
