@@ -86,24 +86,11 @@ Stay informed through local weather updates and heed any advisories issued by au
                 </div>                
             </div>
             <div class="avg">
-                <div class="but"><BaseButton>Show Average Statistic</BaseButton></div>
+                <div @click="fetchData()" class="but"><BaseButton>Show Average Statistic</BaseButton></div>
                 <div class="avg-stats">
-                    <div class="stat">
-                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
+                    <div v-for="(stat, name_stat) in statictics" class="stat">
+                        <div class="offer__title">{{ name_stat + ":  "}}<span class="offer__text">{{ stat }}</span></div>
                     </div>
-                    <div class="stat">
-                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
-                    </div>
-                    <div class="stat">
-                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
-                    </div>
-                    <div class="stat">
-                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
-                    </div>
-                    <div class="stat">
-                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
-                    </div>
-                    {{ statictics }}
                 </div>
             </div>
         </div>
@@ -188,9 +175,8 @@ export default {
             this.fetchData();
         },
         async fetchData() {
-            const { data } = await useFetch('http://127.0.0.1:8000/statistics/average');
+            const { data } = await useFetch('http://127.0.0.1:8000/statistics/average'); //  https://fakestoreapi.com/products
             this.statictics = data;
-            console.log(data.value);
         },
     }
 }    
