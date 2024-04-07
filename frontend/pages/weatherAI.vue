@@ -3,7 +3,7 @@
         <div class="container">
             <Header/>
             <div class="weather-section">
-                <div class="forecast-part">
+                <div v-if="activeCardIndex==null" class="forecast-part">
                     <div class="current-day__info">
                         <div class="weather-temperature">
                             <img  class = "current-day__icon" src="/forecast/sunny.svg" alt="">
@@ -49,6 +49,21 @@
                             </div>
                         </div>
                     
+                    </div>
+                </div>
+                <div v-else class="forecast-part">
+                    <div class="forecast-header">
+                        <img class="current-day__icon forecast-logo" :src="alertCards['card' + (activeCardIndex+ 1)].urlPhoto" alt="">
+                        <div class="forecast-header__content current-date">{{ alertCards['card' + (activeCardIndex+ 1)].message }}</div>
+                    </div>
+                    <div class="forecast-text" >
+                        Attention: Extreme heatwave warning in effect! Anticipate temperatures exceeding 30°C today. <br><br>
+
+Take necessary precautions to safeguard against heat-related illnesses. Stay hydrated by drinking plenty of water, seek shade or air-conditioned environments, and refrain from outdoor activities during peak heat hours.<br><br>
+
+Wear lightweight, loose-fitting clothing and apply sunscreen regularly if venturing outdoors. Keep a close eye on vulnerable individuals such as the elderly, children, and pets, ensuring they stay cool and hydrated. <br><br>
+
+Stay informed through local weather updates and heed any advisories issued by authorities. Let's prioritize safety and well-being during this intense heatwave.<br><br>
                     </div>
                 </div>
                 <div class="message-part">
@@ -103,7 +118,7 @@ export default {
                     message: "Be carefull on sun today!",
                     warning: false,
                     time: "8m ago",
-                    text: ""
+                    text: "Attention: \n Extreme heatwave warning  in effect! Anticipate temperatures exceeding 30°C today. Take necessary precautions to safeguard against heat-related illnesses. Stay hydrated by drinking plenty of water, seek shade or air-conditioned environments, and refrain from outdoor activities during peak heat hours. Wear lightweight, loose-fitting clothing and apply sunscreen regularly if venturing outdoors. Keep a close eye on vulnerable individuals such as the elderly, children, and pets, ensuring they stay cool and hydrated. Stay informed through local weather updates and heed any advisories issued by authorities. Let's prioritize safety and well-being during this intense heatwave."
                 },
                 card2: {
                     urlPhoto: "/forecast/snowy.svg",
@@ -159,6 +174,7 @@ export default {
 .weather-section{
     margin-top: 32px;
     display: flex;
+    justify-content: space-between;
 }
 .forecast-part{
     width: 840px;
@@ -215,6 +231,7 @@ export default {
 }
 .graphic-category{
     position: relative;
+    cursor: pointer;
 }
 .active-graphic-category::after{
     content: "";
@@ -282,7 +299,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-left: 50px;
     margin-top: 20px;
 }
 .alert-block{
@@ -323,4 +339,14 @@ export default {
 .red-text{
     color: #FF0000;
 }
+.forecast-header{
+    display: flex;
+    align-items: center;
+    gap: 36px;
+}
+.forecast-text{
+    margin-top: 26px;
+    font-size: 22px;
+}
+
 </style>
