@@ -188,7 +188,7 @@ export default {
             this.fetchData();
         },
         async fetchData() {
-            const { data } = await useFetch('127.0.0.1:8000');
+            const { data } = await useFetch('http://127.0.0.1:8000/statistics/average');
             this.statictics = data;
             console.log(data.value);
         },

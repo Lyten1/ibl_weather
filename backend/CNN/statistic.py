@@ -1,10 +1,26 @@
 from fastapi import FastAPI
 import sqlite3
 import pandas as pd
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
 db_path = 'weather_data_2.db'
+
+
+allowed_origins = [
+    "http://localhost:3000",  # Assuming your frontend runs on this origin
+    "http://127.0.0.1:3000"
+]
+
+# Add CORSMiddleware to the application
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,  # Allow specified origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 @app.get("/statistics/average")
 async def get_all_statistic_avg():
@@ -20,7 +36,8 @@ async def get_all_statistic_avg():
     max_gust_angle = df.loc[df['gust_strength'].idxmax(), 'gust_angle']
     measurements_per_country = df['country'].value_counts().to_dict()
 
-    return {
+
+    response = {
         "Average Temperature": avg_temperature,
         "Average Humidity": avg_humidity,
         "Average Pressure": avg_pressure,
@@ -28,6 +45,11 @@ async def get_all_statistic_avg():
         "Maximum Gust Angle": max_gust_angle,
         "Measurements Per Country": measurements_per_country
     }
+
+    print(response)
+
+    # Returning the response. FastAPI automatically converts the dictionary to a JSON response.
+    return response
 
 @app.get("/statistics/monthly")
 async def get_monthly_statistic_avg():
