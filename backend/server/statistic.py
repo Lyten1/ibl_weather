@@ -29,13 +29,13 @@ async def get_all_statistic_avg():
     df = pd.read_sql_query(query, conn)
     conn.close()
 
-    avg_temperature = df['temperature'].mean()
-    avg_humidity = df['humidity'].mean()
-    avg_pressure = df['pressure'].mean()
+    avg_temperature = round(df['temperature'].mean(),2)
+    avg_humidity = round(df['humidity'].mean(),2)
+    avg_pressure = round(df['pressure'].mean(),2)
     max_gust_strength = df['gust_strength'].max()
     max_gust_angle = df.loc[df['gust_strength'].idxmax(), 'gust_angle']
     measurements_per_country = df['country'].value_counts().to_dict()
-
+    measurements_per_country_text = ", ".join(f"{country}: {count}" for country, count in measurements_per_country.items())
 
     response = {
         "Average Temperature": avg_temperature,
@@ -43,7 +43,7 @@ async def get_all_statistic_avg():
         "Average Pressure": avg_pressure,
         "Maximum Gust Strength": max_gust_strength,
         "Maximum Gust Angle": max_gust_angle,
-        "Measurements Per Country": measurements_per_country
+        "Measurements Per Country": measurements_per_country_text
     }
 
     print(response)
