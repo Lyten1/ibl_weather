@@ -8,12 +8,12 @@
                         <div class="weather-temperature">
                             <img  class = "current-day__icon" src="/forecast/sunny.svg" alt="">
                             <div class="current-day__temp">
-                                <span class="temperature">18</span>
+                                <span class="temperature">19</span>
                                 °C
                             </div>
                         </div>
                         <div class="current-date-place">
-                            <div class="current-date"><span class="current-week-day">Today, </span>06.04</div>
+                            <div class="current-date"><span class="current-week-day">Today, </span>07.04</div>
                             <div class="current-place">Abudant sunshine</div>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                                 class="graphic-column"
                             >
                                 <div class="value">{{ this.graph[this.activeDayIndex - 1][i]  + "°"}}</div>
-                                <div class="date">{{ i + 10 + ".04" }}</div>   
+                                <div class="date">{{ (i + 10 > 23 ? i - 14 : i + 10) + ":00" }}</div>   
                             </div>
                         </div>
                     </div>
@@ -39,13 +39,13 @@
                         <div v-for="index in 8" 
                             :key = "index"
                             class="day-card" 
-                            :class="{ 'active-card': this.activeDayIndex === index }"
+                            :class="{ 'active-card': activeDayIndex === index }"
                             @click="setActiveDay(index)">
-                            <div class="week-day">Mon</div>
-                            <img src="/forecast/sunny.svg"  alt="" class="day-pic">
+                            <div class="week-day">{{ weekDays[index-1] }}</div>
+                            <img :src="'/forecast/'+ weatherDays[index - 1] +'.svg'"  alt="" class="day-pic">
                             <div class="day-temp">
-                                <span class="max-temp">18° </span>
-                                <span class="min-temp">9°</span>
+                                <span class="max-temp">{{Math.max(...this.graph[index - 1])}}° </span>
+                                <span class="min-temp">{{Math.min(...this.graph[index - 1])}}°</span>
                             </div>
                         </div>
                     
@@ -72,9 +72,9 @@ Stay informed through local weather updates and heed any advisories issued by au
                         :key="idx"
                         @click="setActiveCard(idx)"
                         class="alert-block"
-                        :class="{ 'active-card': this.activeCardIndex == idx }"
+                        :class="{ 'active-card': activeCardIndex == idx }"
                     >
-                        <img style="background-color: transparent;" class = "alert-icon" :src="card.urlPhoto" alt="">
+                        <img class = "alert-icon" :src="card.urlPhoto" alt="">
                         <div class="text-block">
                             <div class="offer__title" :class="{'red-text' : card.warning}">{{ card.message }}</div>
                             <div class="offer__text blue-text">See more...</div>
@@ -84,6 +84,27 @@ Stay informed through local weather updates and heed any advisories issued by au
                     
                     <div class="more-records-card">More records....</div>
                 </div>                
+            </div>
+            <div class="avg">
+                <div class="but"><BaseButton>Show Average Statistic</BaseButton></div>
+                <div class="avg-stats">
+                    <div class="stat">
+                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
+                    </div>
+                    <div class="stat">
+                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
+                    </div>
+                    <div class="stat">
+                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
+                    </div>
+                    <div class="stat">
+                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
+                    </div>
+                    <div class="stat">
+                        <div class="offer__title">Average stat:  <span class="offer__text">asdasd</span></div>
+                    </div>
+                    {{ statictics }}
+                </div>
             </div>
         </div>
         <Footer/>
@@ -98,24 +119,23 @@ export default {
             activeDayIndex: 1,
             activeCardIndex: null,
             graph: [
-                [100, 18, 19, 60, 15, 23, 12, 17, 17, 18, 19, 26, 15, 23, 12],
-                [1, 18, 19, 60, 15, 23, 12, 17, 17, 18, 19, 26, 15, 23, 12],
-                [2, 18, 19, 60, 15, 23, 12, 17, 17, 18, 19, 26, 15, 23, 12],
-                [3, 18, 19, 60, 15, 23, 12, 17, 17, 18, 19, 26, 15, 23, 12], 
-                [4, 18, 19, 60, 15, 23, 12, 17, 17, 18, 19, 26, 15, 23, 12],
-                [5, 18, 19, 60, 15, 23, 12, 17, 17, 18, 19, 26, 15, 23, 12],
-                [6, 18, 19, 60, 15, 23, 12, 17, 17, 18, 19, 26, 15, 23, 12],
-                [100, 18, 19, 60, 15, 23, 12, 17, 17, 18, 19, 26, 15, 23, 12]
+                [18, 19, 20, 22, 23, 25, 26, 27, 25, 24, 22, 20, 19, 18, 17],
+                [14, 15, 16, 18, 19, 20, 21, 22, 20, 19, 17, 16, 15, 14, 13],
+                [17, 21, 22, 23, 24, 26, 27, 28, 27, 26, 23, 21, 20, 18, 17],
+                [19, 22, 24, 23, 25, 27, 28, 29, 27, 25, 24, 23, 21, 20, 19],
+                [20, 22, 23, 24, 25, 28, 30, 31, 28, 26, 24, 22, 21, 20, 19],
+                [20, 23, 24, 25, 27, 28, 30, 31, 29, 27, 26, 24, 22, 21, 20],
+                [19, 20, 22, 24, 25, 26, 28, 29, 27, 25, 24, 23, 21, 20, 19],
+                [18, 20, 21, 23, 24, 25, 26, 27, 26, 25, 23, 22, 20, 19, 18],
+                [15, 17, 18, 20, 21, 22, 23, 24, 22, 21, 19, 18, 17, 15, 14]
             ],
-
-            days: {
-
-            },
-
+            statictics : {},
+            weekDays: ["Sun", "Mon", "Tue", "Wed", 'Thu', "Fri", "Sat", "Sun"],
+            weatherDays: ["sunny", "rainy", "stormy", "sunny", "sunny_rainy", "sunny", "sunny_rainy", "rainy"],
             alertCards: {
                 card1: {
                     urlPhoto: "/forecast/sunny.svg",
-                    message: "Be carefull on sun today!",
+                    message: "Be careful on sun today!",
                     warning: false,
                     time: "8m ago",
                     text: "Attention: \n Extreme heatwave warning  in effect! Anticipate temperatures exceeding 30°C today. Take necessary precautions to safeguard against heat-related illnesses. Stay hydrated by drinking plenty of water, seek shade or air-conditioned environments, and refrain from outdoor activities during peak heat hours. Wear lightweight, loose-fitting clothing and apply sunscreen regularly if venturing outdoors. Keep a close eye on vulnerable individuals such as the elderly, children, and pets, ensuring they stay cool and hydrated. Stay informed through local weather updates and heed any advisories issued by authorities. Let's prioritize safety and well-being during this intense heatwave."
@@ -165,7 +185,13 @@ export default {
         setActiveCard(index){
             if(this.activeCardIndex == index) this.activeCardIndex = null;
             else this.activeCardIndex = index
-        }
+            this.fetchData();
+        },
+        async fetchData() {
+            const { data } = await useFetch('127.0.0.1:8000');
+            this.statictics = data;
+            console.log(data.value);
+        },
     }
 }    
 </script>
@@ -316,7 +342,7 @@ export default {
     background-color: #EFEFEF;
 }
 .alert-icon{
-    background-color: white;
+    background-color: transparent;
     width: 53px;
     height: 53px;
 }
@@ -348,5 +374,11 @@ export default {
     margin-top: 26px;
     font-size: 22px;
 }
-
+.avg{
+    margin: 140px 0;
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    align-items: center;
+}
 </style>
