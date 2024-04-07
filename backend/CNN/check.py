@@ -3,7 +3,6 @@ import csv
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from fastapi import FastAPI
 import os
 
 
@@ -64,24 +63,13 @@ weather_classes = {
 }
 
 print("Predicted Weather Condition:", weather_classes[predicted_class])
-app=FastAPI()
-
-
-@app.get("/")
-def get_home():
-  return {"data": weather_classes[predicted_class]}
-
 
 
 
 file_path = f'decription/{(weather_classes[predicted_class]).replace(" ","_")}.txt'
-# Проверить существование файла
 if os.path.isfile(file_path):
-    # Открыть файл для чтения
     with open(file_path, 'r') as file:
-        # Прочитать все строки файла и сохранить их в список
         lines = file.readlines()
-        # Вывести каждую строку из списка
         for line in lines:
             print(line.strip())
 else:
